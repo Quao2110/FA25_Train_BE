@@ -1,7 +1,7 @@
 ﻿using Application.DTOs.RequestDTOs;
 using Application.DTOs.ResponseDTOs;
 using AutoMapper;
-using Infrastructure.Models;
+using Domain.Entities;
 
 namespace Application.Mapping
 {
@@ -9,9 +9,9 @@ namespace Application.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Account, UserResponseDTO>().ReverseMap();
-            CreateMap<Account, CreateUserDTOs>().ReverseMap();
-            CreateMap<Account, UpdateUserDTO>().ReverseMap();
+            CreateMap<User, UserResponseDTO>().ReverseMap();
+            CreateMap<User, CreateUserDTOs>().ReverseMap();
+            CreateMap<User, UpdateUserDTO>().ReverseMap();
         }
     }
 }

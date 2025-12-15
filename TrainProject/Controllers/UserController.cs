@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.ApiResponseDTO;
 using Application.Interfaces.ServiceProviders;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {

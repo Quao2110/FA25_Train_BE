@@ -5,7 +5,7 @@ using Application.Interfaces.UnitOfwork;
 using Application.Mapping;
 using Application.Services;
 using Application.ServideProviders;
-using Infrastructure.Models;
+using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
 using Infrastructure.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +20,13 @@ namespace Infrastructure.Configurations
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<UserOnlyContext>(options =>
+            services.AddDbContext<FakebookContext>(options =>
                 options.UseSqlServer(connectionString)
             );
 
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IServiceProviders, ServiceProviders>();
 

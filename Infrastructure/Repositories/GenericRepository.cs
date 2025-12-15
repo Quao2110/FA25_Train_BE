@@ -1,15 +1,14 @@
 ﻿using Application.Interfaces.Repository;
-using Infrastructure.Models;
+using Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly UserOnlyContext _context;
+        private readonly FakebookContext _context;
 
-        public GenericRepository(UserOnlyContext context)
+        public GenericRepository(FakebookContext context)
         {
             _context = context;
         }
