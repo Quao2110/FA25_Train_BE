@@ -1,20 +1,15 @@
 ﻿using Application.Interfaces.Repository;
 using Application.Interfaces.UnitOfwork;
-using Infrastructure.Models;
+using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.UnitOfWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly UserOnlyContext _context;
+        private readonly FakebookContext _context;
 
-        public UnitOfWork(UserOnlyContext context)
+        public UnitOfWork(FakebookContext context)
         {
             _context = context;
         }

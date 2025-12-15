@@ -1,16 +1,13 @@
 ﻿using Application.Interfaces.Repository;
-using Infrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Entities;
+using Infrastructure.DbContexts;
+
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : GenericRepository<Account>, IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public UserRepository(UserOnlyContext _context) : base(_context)
+        public UserRepository(FakebookContext context) : base(context)
         {
         }
     }

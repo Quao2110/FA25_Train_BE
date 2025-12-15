@@ -3,7 +3,7 @@ using Application.DTOs.ResponseDTOs;
 using Application.Interfaces.Service;
 using Application.Interfaces.UnitOfwork;
 using AutoMapper;
-using Infrastructure.Models;
+using Domain.Entities;
 
 namespace Application.Services
 {
@@ -20,7 +20,7 @@ namespace Application.Services
 
         public async Task CreateAsync(CreateUserDTOs requestDTO)
         {
-            var entity = _mapper.Map<Account>(requestDTO);
+            var entity = _mapper.Map<User>(requestDTO);
             await _unitOfWork.UserRepository.CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -33,7 +33,7 @@ namespace Application.Services
 
         public async Task DeleteAsync(UserResponseDTO requestDTO)
         {
-            var entity = _mapper.Map<Account>(requestDTO);
+            var entity = _mapper.Map<User>(requestDTO);
             _unitOfWork.UserRepository.Delete(entity);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -52,7 +52,7 @@ namespace Application.Services
 
         public async Task UpdateAsync(UpdateUserDTO requestDTO)
         {
-            var entity = _mapper.Map<Account>(requestDTO);
+            var entity = _mapper.Map<User>(requestDTO);
             _unitOfWork.UserRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }

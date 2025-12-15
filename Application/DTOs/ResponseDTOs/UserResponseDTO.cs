@@ -12,10 +12,13 @@ namespace Application.DTOs.ResponseDTOs
 
         public string Username { get; set; } = null!;
 
-        public string? Avatar { get; set; }
+        public string Email { get; set; } = null!;
 
-        public DateTime? CreatedAt { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public bool IsActive { get; set; }
+
+        public DateTime? LastLogin { get; set; }
+
     }
 }
