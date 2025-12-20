@@ -38,9 +38,8 @@ namespace Application.Services
             entity.ShareCount = 0;
             entity.UpdatedAt = null;
 
-            await _unitOfWork.PostRepository.CreateAsync(entity);
-
             //Reflect to DB
+            await _unitOfWork.PostRepository.CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
         }
 

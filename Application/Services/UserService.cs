@@ -18,43 +18,77 @@ namespace Application.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Create User
+        /// </summary>
         public async Task CreateAsync(CreateUserDTOs requestDTO)
         {
             var entity = _mapper.Map<User>(requestDTO);
+
+            entity.UserId = Guid.NewGuid();
+            entity.IsActive = true;
+            entity.CreatedAt = DateTime.UtcNow;
+
+            //Reflect to DB
             await _unitOfWork.UserRepository.CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Delete User
+        /// </summary>
         public async Task DeleteAsync(Guid id)
         {
-            _unitOfWork.UserRepository.DeleteById(id);
-            await _unitOfWork.SaveChangesAsync();
+            var post = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            if (post != null)
+            {
+                post.IsActive = false;
+                post.UpdatedAt = DateTime.UtcNow;
+
+                //Logical deletion
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
 
-        public async Task DeleteAsync(UserResponseDTO requestDTO)
-        {
-            var entity = _mapper.Map<User>(requestDTO);
-            _unitOfWork.UserRepository.Delete(entity);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
+        /// <summary>
+        /// Get All Users
+        /// </summary>
         public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
             var users = await _unitOfWork.UserRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+            var activeUsers = users.Where(p => p.IsActive == true).ToList();
+            return _mapper.Map<IEnumerable<UserResponseDTO>>(activeUsers);
         }
 
+        /// <summary>
+        /// Get User By ID
+        /// </summary>
         public async Task<UserResponseDTO> GetById(Guid id)
         {
             var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            if (user == null || user.IsActive == false)
+            {
+                return null;
+            }
             return _mapper.Map<UserResponseDTO>(user);
         }
 
+        /// <summary>
+        /// Update User
+        /// </summary>
         public async Task UpdateAsync(UpdateUserDTO requestDTO)
         {
-            var entity = _mapper.Map<User>(requestDTO);
-            _unitOfWork.UserRepository.Update(entity);
-            await _unitOfWork.SaveChangesAsync();
+            var userInDb = await _unitOfWork.UserRepository.GetByIdAsync(requestDTO.UserId);
+
+            if (userInDb != null)
+            {
+                _mapper.Map(requestDTO, userInDb);
+                userInDb.UpdatedAt = DateTime.UtcNow;
+
+                //Reflect to DB
+                _unitOfWork.UserRepository.Update(userInDb);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }
