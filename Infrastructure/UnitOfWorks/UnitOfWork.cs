@@ -14,8 +14,13 @@ namespace Infrastructure.UnitOfWorks
             _context = context;
         }
 
+        // User Repository
         private IUserRepository _userRepository;
         public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context);
+
+        // Post Repository
+        private IPostRepository _postRepository;
+        public IPostRepository PostRepository => _postRepository ?? new PostRepository(_context);
 
         public async Task<int> SaveChangesAsync()
         {

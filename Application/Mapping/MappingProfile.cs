@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.RequestDTOs;
+using Application.DTOs.RequestDTOs.PostDTO;
 using Application.DTOs.ResponseDTOs;
 using AutoMapper;
 using Domain.Entities;
@@ -12,6 +13,8 @@ namespace Application.Mapping
             CreateMap<User, UserResponseDTO>().ReverseMap();
             CreateMap<User, CreateUserDTOs>().ReverseMap();
             CreateMap<User, UpdateUserDTO>().ReverseMap();
+            CreateMap<Post, CreatePostRequestDTO>().ReverseMap();
+            CreateMap<Post, UpdatePostRequestDTO>().ReverseMap();
         }
     }
 }

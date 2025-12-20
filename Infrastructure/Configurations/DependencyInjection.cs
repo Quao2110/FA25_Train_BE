@@ -32,8 +32,8 @@ namespace Infrastructure.Configurations
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-
-
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             return services;
         }
