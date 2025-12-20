@@ -15,6 +15,5 @@ namespace Application.Interfaces.Service
         Task CreateAsync(CreateUserDTOs requestDTO);
         Task UpdateAsync(UpdateUserDTO requestDTO);
         Task DeleteAsync(Guid id);
-        Task DeleteAsync(UserResponseDTO requestDTO);
     }
 }

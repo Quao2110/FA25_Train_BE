@@ -10,6 +10,7 @@ namespace Application.Interfaces.UnitOfwork
     public interface IUnitOfWork
     {
         IUserRepository UserRepository { get; }
+        IPostRepository PostRepository { get; }
         Task<int> SaveChangesAsync();
     }
 }
