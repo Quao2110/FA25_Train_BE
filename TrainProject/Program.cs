@@ -1,5 +1,5 @@
-using Application.Mapping;
 using Infrastructure.Configurations;
+using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddInfrastructureService(builder.Configuration);
+builder.Services.AddGlobalValidation(builder.Configuration);
 
 var app = builder.Build();
 

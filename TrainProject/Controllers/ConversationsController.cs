@@ -1,20 +1,14 @@
 using Application.DTOs.RequestDTOs.ConversationDTO;
-using Application.DTOs.ResponseDTOs;
 using Application.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace TrainProject.Controllers
+namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class ConversationsController : ControllerBase
     {
         private readonly IConversationService _conversationService;
@@ -45,7 +39,7 @@ namespace TrainProject.Controllers
             try
             {
                 var currentUserId = GetCurrentUserId();
-                
+
                 // Add current user to participants if not already included
                 if (!createDto.ParticipantIds.Contains(currentUserId))
                 {
@@ -70,7 +64,7 @@ namespace TrainProject.Controllers
         {
             var currentUserId = GetCurrentUserId();
             var conversation = await _conversationService.GetConversationByIdAsync(id, currentUserId);
-            
+
             if (conversation == null)
             {
                 return NotFound("Conversation not found or access denied");
@@ -97,7 +91,7 @@ namespace TrainProject.Controllers
 
             var currentUserId = GetCurrentUserId();
             var result = await _conversationService.UpdateConversationAsync(updateDto, currentUserId);
-            
+
             if (result == null)
             {
                 return NotFound("Conversation not found or access denied");
@@ -111,7 +105,7 @@ namespace TrainProject.Controllers
         {
             var currentUserId = GetCurrentUserId();
             var result = await _conversationService.DeleteConversationAsync(id, currentUserId);
-            
+
             if (!result)
             {
                 return NotFound("Conversation not found or access denied");
@@ -131,7 +125,7 @@ namespace TrainProject.Controllers
             var currentUserId = GetCurrentUserId();
             var result = await _conversationService.AddParticipantsToConversationAsync(
                 conversationId, participantIds, currentUserId);
-            
+
             if (!result)
             {
                 return NotFound("Conversation not found or access denied");
@@ -146,7 +140,7 @@ namespace TrainProject.Controllers
             var currentUserId = GetCurrentUserId();
             var result = await _conversationService.RemoveParticipantFromConversationAsync(
                 conversationId, participantId, currentUserId);
-            
+
             if (!result)
             {
                 return NotFound("Conversation/participant not found or access denied");
