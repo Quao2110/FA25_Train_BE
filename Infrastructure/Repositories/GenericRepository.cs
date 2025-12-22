@@ -1,6 +1,7 @@
-﻿using Application.Interfaces.Repository;
+using Application.Interfaces.Repository;
 using Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
@@ -47,6 +48,11 @@ namespace Infrastructure.Repositories
             _context.ChangeTracker.Clear();
             var tracker = _context.Attach(entity);
             tracker.State = EntityState.Modified;
+        }
+
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
     }

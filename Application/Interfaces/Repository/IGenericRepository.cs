@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repository
@@ -14,5 +12,6 @@ namespace Application.Interfaces.Repository
         void Update(T entity);
         void Delete(T entity);
         void DeleteById(Guid id);
+        Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
     }
 }
