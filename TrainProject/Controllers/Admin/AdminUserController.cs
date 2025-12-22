@@ -53,15 +53,6 @@ namespace Presentation.Controllers.Admin
         {
             if (dto == null) return BadRequest(ApiResponse.Fail("Data is null"));
 
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return BadRequest(ApiResponse.Fail(string.Join(", ", errors)));
-            }
-
             await _userService.CreateAsync(dto);
 
             //Normal response

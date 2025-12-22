@@ -11,6 +11,7 @@ namespace Application.DTOs.ApiResponseDTO
         public string Message { get; set; } = string.Empty;
         public bool IsSuccess { get; set; }
         public object? Result { get; set; }
+        public object? Errors { get; set; }
 
         public static ApiResponse Success(string message = "Success", object? result = null)
             => new()
@@ -20,11 +21,12 @@ namespace Application.DTOs.ApiResponseDTO
                 Result = result
             };
 
-        public static ApiResponse Fail(string message)
+        public static ApiResponse Fail(string message, object? error = null)
             => new()
             {
                 Message = message,
-                IsSuccess = false
+                IsSuccess = false,
+                Errors = error
             };
     }
 }

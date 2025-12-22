@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.ApiResponseDTO;
-using Application.Interfaces.ServiceProviders;
+using Application.Interfaces.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -8,17 +8,17 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IServiceProviders _serviceProviders;
+        private readonly IUserService _userService;
 
-        public UserController(IServiceProviders serviceProviders)
+        public UserController(IUserService userService)
         {
-            _serviceProviders = serviceProviders;
+            _userService = userService;
         }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var listUser = await _serviceProviders.UserService.GetAllAsync();
+            var listUser = await _userService.GetAllAsync();
 
             return Ok(ApiResponse.Success("Get all Successful", listUser));
         }

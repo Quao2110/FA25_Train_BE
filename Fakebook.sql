@@ -1,7 +1,11 @@
 ﻿USE master;
 GO
 
-DROP DATABASE IF EXISTS Fakebook;
+IF EXISTS (SELECT name FROM sys.databases WHERE name = N'Fakebook')
+BEGIN
+    ALTER DATABASE Fakebook SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE Fakebook;
+END
 GO
 
 CREATE DATABASE Fakebook;
@@ -236,6 +240,30 @@ CREATE TABLE Notifications (
 
 GO
 
+-- 1. Tối ưu bảng PostMedia (Lấy ảnh của bài viết nhanh hơn)
+CREATE NONCLUSTERED INDEX IX_PostMedia_PostId ON PostMedia(PostId);
+
+-- 2. Tối ưu bảng Comments (Lấy comment của bài viết nhanh hơn)
+-- Bao gồm cả CreatedAt để sắp xếp comment cũ -> mới
+CREATE NONCLUSTERED INDEX IX_Comments_PostId_CreatedAt ON Comments(PostId, CreatedAt);
+CREATE NONCLUSTERED INDEX IX_Comments_UserId ON Comments(UserId); -- Để xem lịch sử comment của user
+
+-- 3. Tối ưu bảng Reactions (Đếm like hoặc kiểm tra user đã like chưa)
+CREATE NONCLUSTERED INDEX IX_Reactions_PostId_Type ON Reactions(PostId, Type);
+CREATE NONCLUSTERED INDEX IX_Reactions_UserId ON Reactions(UserId);
+
+-- 4. Tối ưu bảng Notifications (Lấy thông báo cho User)
+CREATE NONCLUSTERED INDEX IX_Notifications_UserId_CreatedAt ON Notifications(UserId, CreatedAt DESC);
+
+-- 5. Tối ưu bảng Messages (Load tin nhắn trong hội thoại)
+CREATE NONCLUSTERED INDEX IX_Messages_ConversationId_CreatedAt ON Messages(ConversationId, CreatedAt DESC);
+
+-- Index này giúp lọc bài viết theo User và sắp xếp ngày tháng cực nhanh
+-- INCLUDE (PrivacyLevel) giúp query lấy thông tin này mà không cần quay lại bảng chính (Lookup)
+CREATE NONCLUSTERED INDEX IX_Posts_UserId_CreatedAt 
+ON Posts(UserId, CreatedAt DESC) 
+INCLUDE (PrivacyLevel, IsDeleted);
+
 
 DECLARE @AdminId UNIQUEIDENTIFIER = NEWID();
 DECLARE @NormalUserId UNIQUEIDENTIFIER = NEWID();
@@ -271,6 +299,6 @@ VALUES
 -- =======================================================
 -- 3. KIỂM TRA DỮ LIỆU
 -- =======================================================
-SELECT u.Username, u.Email, p.FirstName, p.LastName, p.DisplayName 
+SELECT  u.UserId, u.Username, u.Email, p.FirstName, p.LastName, p.DisplayName 
 FROM Users u
 JOIN UserProfiles p ON u.UserId = p.UserId;

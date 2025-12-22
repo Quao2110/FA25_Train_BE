@@ -1,10 +1,8 @@
 ﻿using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
-using Application.Interfaces.ServiceProviders;
 using Application.Interfaces.UnitOfwork;
 using Application.Mapping;
 using Application.Services;
-using Application.ServideProviders;
 using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
 using Infrastructure.UnitOfWorks;
@@ -28,15 +26,14 @@ namespace Infrastructure.Configurations
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IServiceProviders, ServiceProviders>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
 
+
             return services;
         }
-
     }
 }
