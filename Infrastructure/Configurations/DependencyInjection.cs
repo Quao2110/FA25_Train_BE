@@ -9,6 +9,9 @@ using Infrastructure.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using System;
+using StackExchange.Redis;
 
 namespace Infrastructure.Configurations
 {
@@ -31,7 +34,32 @@ namespace Infrastructure.Configurations
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddMemoryCache();
 
+            string redisConn;
+            var redisSection = configuration.GetSection("Redis:ConnectionString");
+            if (redisSection.Exists())
+            {
+                redisConn = redisSection.Value;
+            }
+            else
+            {
+                redisConn = "localhost:6379";
+            }
+            var options = ConfigurationOptions.Parse(redisConn);
+            options.AbortOnConnectFail = false; 
+            options.ConnectRetry = 5;
+            options.ConnectTimeout = 5000;
+            options.SyncTimeout = 5000;
+            options.AllowAdmin = false;
+
+            var mux = ConnectionMultiplexer.Connect(options);
+            services.AddSingleton<IConnectionMultiplexer>(mux);
+            services.AddSingleton<IRedisService, RedisService>();
+
+            services.AddScoped<IJwtService, JwtService>();
 
             return services;
         }

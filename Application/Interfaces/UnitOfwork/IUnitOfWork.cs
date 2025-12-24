@@ -12,6 +12,8 @@ namespace Application.Interfaces.UnitOfwork
         IUserRepository UserRepository { get; }
         IPostRepository PostRepository { get; }
         IConversationRepository ConversationRepository { get; }
+        IAuthRepository authRepository { get; }
+        IUserRepository userRepository { get; }
         Task<int> SaveChangesAsync();
         Task CommitAsync();
     }

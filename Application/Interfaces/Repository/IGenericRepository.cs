@@ -1,5 +1,6 @@
-using System.Linq.Expressions;
+using Domain.Entities;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repository
@@ -13,5 +14,6 @@ namespace Application.Interfaces.Repository
         void Delete(T entity);
         void DeleteById(Guid id);
         Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> GetByEmailAsync(string email);
     }
 }
