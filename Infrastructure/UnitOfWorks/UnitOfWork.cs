@@ -30,6 +30,10 @@ namespace Infrastructure.UnitOfWorks
         private IConversationRepository? _conversationRepository;
         public IConversationRepository ConversationRepository => _conversationRepository ??= new ConversationRepository(_context);
 
+        public IAuthRepository authRepository => throw new NotImplementedException();
+
+        public IUserRepository userRepository => throw new NotImplementedException();
+
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();

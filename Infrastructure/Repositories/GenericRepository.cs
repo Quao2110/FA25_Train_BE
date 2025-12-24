@@ -55,5 +55,9 @@ namespace Infrastructure.Repositories
             return await _context.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
+        public Task<T?> GetByEmailAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
