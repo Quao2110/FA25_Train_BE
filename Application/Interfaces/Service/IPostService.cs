@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.DTOs.RequestDTOs.PostDTO;
-using Domain.Entities;
+﻿using Application.DTOs.RequestDTOs.PostDTO;
+using Application.DTOs.ResponseDTOs;
 
 namespace Application.Interfaces.Service
 {
     public interface IPostService
     {
-        Task<IEnumerable<Post>> GetAllPostsAsync();
-        Task<Post?> GetPostByIdAsync(Guid id);
+        Task<IEnumerable<PostResponseDTO>> GetAllPostsAsync();
+        Task<PostResponseDTO?> GetPostByIdAsync(Guid id);
         Task CreatePostAsync(CreatePostRequestDTO requestDTO);
-        Task UpdatePostAsync(Guid id, UpdatePostRequestDTO requestDTO);
+        Task UpdatePostAsync(UpdatePostRequestDTO requestDTO);
         Task DeletePostAsync(Guid id);
     }
 }

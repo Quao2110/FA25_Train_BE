@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Application.DTOs.RequestDTOs.PostDTO;
+﻿using Application.DTOs.RequestDTOs.PostDTO;
+using Application.DTOs.ResponseDTOs;
 using Application.Interfaces.Service;
 using Application.Interfaces.UnitOfwork;
 using AutoMapper;
@@ -62,28 +57,32 @@ namespace Application.Services
         /// <summary>
         /// Get All Posts
         /// </summary>
-        public async Task<IEnumerable<Post>> GetAllPostsAsync()
+        public async Task<IEnumerable<PostResponseDTO>> GetAllPostsAsync()
         {
             var posts = await _unitOfWork.PostRepository.GetAllAsync();
-            return posts.Where(p => p.IsDeleted == false || p.IsDeleted == null);
+            var activePosts = posts.Where(p => p.IsDeleted == false || p.IsDeleted == null);
+
+            return _mapper.Map<IEnumerable<PostResponseDTO>>(activePosts);
         }
 
         /// <summary>
         /// Get Post By ID
         /// </summary>
-        public async Task<Post?> GetPostByIdAsync(Guid id)
+        public async Task<PostResponseDTO?> GetPostByIdAsync(Guid id)
         {
             var post = await _unitOfWork.PostRepository.GetByIdAsync(id);
-            return post != null && (post.IsDeleted == false || post.IsDeleted == null) ? post : null;
+            if (post == null || post.IsDeleted == true) return null;
+
+            return _mapper.Map<PostResponseDTO>(post);
         }
 
         /// <summary>
         /// Update Post
         /// </summary>
-        public async Task UpdatePostAsync(Guid id, UpdatePostRequestDTO
+        public async Task UpdatePostAsync(UpdatePostRequestDTO
             postDTO)
         {
-            var existingPost = await _unitOfWork.PostRepository.GetByIdAsync(id);
+            var existingPost = await _unitOfWork.PostRepository.GetByIdAsync(postDTO.PostId);
             if (existingPost != null)
             {
                 // Map data from DTO to Entity if DTO has additional fields

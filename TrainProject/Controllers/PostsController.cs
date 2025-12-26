@@ -1,8 +1,6 @@
 ﻿using Application.DTOs.ApiResponseDTO;
 using Application.DTOs.RequestDTOs.PostDTO;
 using Application.Interfaces.Service;
-using Azure.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -85,7 +83,7 @@ namespace Presentation.Controllers
             var existing = await _postService.GetPostByIdAsync(id);
             if (existing == null) return NotFound(ApiResponse.Fail("Post not found"));
 
-            await _postService.UpdatePostAsync(id, dto);
+            await _postService.UpdatePostAsync(dto);
 
             //Normal response
             return Ok(ApiResponse.Success("Update post successful", dto));
