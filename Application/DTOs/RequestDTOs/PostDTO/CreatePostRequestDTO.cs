@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.RequestDTOs.PostDTO
 {
@@ -22,7 +17,7 @@ namespace Application.DTOs.RequestDTOs.PostDTO
         public string? Content { get; set; }
 
         /// <summary>
-        /// PrivacyLevel
+        /// PrivacyLevel (Public, Friends, Private)
         /// </summary>
         [Required(ErrorMessage = "Privacy level is required")]
         [RegularExpression("^(Public|Friends|Private)$", ErrorMessage = "Privacy level must be Public, Friends, or Private")]

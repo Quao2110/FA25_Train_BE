@@ -13,6 +13,7 @@ namespace Application.Mapping
             CreateMap<User, UserResponseDTO>().ReverseMap();
             CreateMap<User, CreateUserDTOs>().ReverseMap();
             CreateMap<User, UpdateUserDTO>().ReverseMap();
+            CreateMap<Post, PostResponseDTO>().ReverseMap();
             CreateMap<Post, CreatePostRequestDTO>().ReverseMap();
             CreateMap<Post, UpdatePostRequestDTO>().ReverseMap();
         }
